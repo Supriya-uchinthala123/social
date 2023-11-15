@@ -1,0 +1,32 @@
+// PageList.js
+
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+const PageList = () => {
+  const [pages, setPages] = useState([]);
+
+  useEffect(() => {
+    // Fetch pages data from the API endpoint
+    fetch('/api/pages')
+      .then((response) => response.json())
+      .then((data) => setPages(data))
+      .catch((error) => console.error('Error fetching pages:', error));
+  }, []);
+
+  return (
+    <div>
+      <h2>Social Pages</h2>
+      <ul>
+        {pages.map((page) => (
+          <li key={page.pageId}>
+            <Link to={`/pages/${page.pageId}`}>{page.pageName}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PageList;
+

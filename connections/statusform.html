@@ -1,0 +1,38 @@
+// StatusForm.js
+
+import React, { useState } from 'react';
+
+const StatusForm = ({ pageId }) => {
+  const [statusContent, setStatusContent] = useState('');
+
+  const handleStatusSubmit = (event) => {
+    event.preventDefault();
+    
+    // Submit the status to the API
+    fetch(`/api/pages/${pageId}/statuses`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ content: statusContent }),
+    })
+      .then(() => {
+        // Refresh the status list after submitting
+        setStatusContent('');
+      })
+      .catch((error) => console.error('Error submitting status:', error));
+  };
+
+  return (
+    <form onSubmit={handleStatusSubmit}>
+      <textarea
+        value={statusContent}
+        onChange={(e) => setStatusContent(e.target.value)}
+        placeholder="What's on your mind?"
+      ></textarea>
+      <button type="submit">Post</button>
+    </form>
+  );
+};
+
+export default StatusForm;
