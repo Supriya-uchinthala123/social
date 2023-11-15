@@ -1,0 +1,28 @@
+// PageDetails.js
+
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import StatusList from './StatusList';
+
+const PageDetails = () => {
+  const { pageId } = useParams();
+  const [pageDetails, setPageDetails] = useState({});
+
+  useEffect(() => {
+    // Fetch page details from the API endpoint
+    fetch(`/api/pages/${pageId}`)
+      .then((response) => response.json())
+      .then((data) => setPageDetails(data))
+      .catch((error) => console.error('Error fetching page details:', error));
+  }, [pageId]);
+
+  return (
+    <div>
+      <h2>{pageDetails.pageName}</h2>
+      <p>{pageDetails.description}</p>
+      <StatusList pageId={pageId} />
+    </div>
+  );
+};
+
+export default PageDetails;
